@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Vue Example</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+</head>
+
+<body>
+	<div id="app">
+		<div class="row">
+		<h1> Imprimir PDF desde hosting sin vista previa con Vue</h1>
+			<div class="col-md-12 text-center">
+				<button type="button" class="btn btn-success" @click="printer">Success</button>
+			</div>
+		</div>
+	</div>
+ 
+  <script src="https://unpkg.com/vue"></script>
+  <script>
+    var app = new Vue({
+      el: '#app', // Elemento
+      data: { // Parametros
+        config: {
+          printer_name: 'XP-80C'
+        }
+      },
+      methods: {
+        printer: function() {
+			let nombre_impresora = this.config.printer_name;
+			const urlPdf = "https://demo.pse.aqpfact.pe/print/document/6e50a4bd-5d4f-4fb9-9bd8-b5c59712b4f5/ticket";
+			const url = `http://localhost:8080/url?urlPdf=${urlPdf}&impresora=${nombre_impresora}`;
+			fetch(url)
+				.then(respuesta => {
+					if (respuesta.status === 200) {
+						alert("Impreso correctamente");
+					} else {
+						respuesta.json()
+							.then(mensaje => {
+								alert("Ocurrió un error: " + mensaje);
+							});
+					}
+				});
+		}
+      }
+      
+    });
+  </script>
+</body>
